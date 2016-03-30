@@ -1,7 +1,3 @@
-/**
- * Created by alexandru-coman on 22/12/15.
- */
-
 'use strict';
 
 angular.module('myApp.map', [])
@@ -11,8 +7,14 @@ angular.module('myApp.map', [])
                 navigator.geolocation.getCurrentPosition(function(position){
                     $scope.$apply(function () {
                         $scope.position = position;
-                        console.log(position);
-                        $scope.map = { center: { latitude: position.coords.latitude, longitude: position.coords.longitude }, zoom: 15 };
+                        console.log(position.coords.latitude, position.coords.longitude);
+                        $scope.map = new google.maps.Map(document.getElementById('map_canvas'), {
+                            zoom: 15,
+                            center: {lat: position.coords.latitude, lng: position.coords.longitude},
+                            mapTypeControl: true,
+                            mapTypeId: google.maps.MapTypeId.ROADMAP
+                        });
+
                         $scope.coordsUpdates = 0;
                         $scope.dynamicMoveCtr = 0;
                         $scope.marker = {
@@ -30,12 +32,11 @@ angular.module('myApp.map', [])
                                     $log.log(lat);
                                     $log.log(lon);
 
-                                    $scope.marker.options = {
-                                        draggable: true,
-                                        labelContent: "lat: " + $scope.marker.coords.latitude + ' ' + 'lon: ' + $scope.marker.coords.longitude,
-                                        labelAnchor: "100 0",
-                                        labelClass: "marker-labels"
-                                    };
+                                    $scope.marker = new google.maps.Marker({
+                                        map: $scope.map,
+                                        position: new google.maps.LatLng(position.coords.latitude, position.coords.longitude),
+                                        title: 'You are here'
+                                    });
                                 }
                             }
                         };
@@ -60,9 +61,5 @@ angular.module('myApp.map', [])
                         }, 1000);
                     })
                 });
-
             }
-            else {
-                $scope.map = {center: {latitude: 45, longitude: -35}, zoom: 8};
-            }
-    });
+        });
