@@ -165,42 +165,35 @@ angular.module('myApp.map', [])
                 });
             }
 
-            $scope.getNearbyPlaces = function(placeId, radius, type) {
-                type = type || '';
-                $scope.getPlaceDetailsByPlaceId(placeId);
-                console.log(ctrlScope.endPlace);
-                if(ctrlScope.endPlace) {
-                    $http({
-                        method: 'GET',
-                        url: 'https://maps.googleapis.com/maps/api/place/nearbysearch/json',
-                        data: {
-                            key: googleApiKey,
-                            location: ctrlScope.endPlace.geometry.location,
-                            radius: radius,
-                            type: type
-                        }
-                    }).then(function successCallback(response) {
-                        console.log(response);
-                        // this callback will be called asynchronously
-                        // when the response is available
-                    }, function errorCallback(response) {
-                        console.log(response);
-                        // called asynchronously if an error occurs
-                        // or server returns response with an error status.
-                    });
-                }
+            function putMarkers(endPlace, radius, type) {
+                console.log(googleApiKey)
+                var service = new google.maps.places.PlacesService(ctrlScope.map);
+                service.nearbySearch({
+                    location: endPlace.geometry.location,
+                    radius: 500,
+                    type: ['store']
+                }, function(results, status, pagination) {
+                    console.log(results)
+                });
+
             }
 
-            $scope.getPlaceDetailsByPlaceId = function(placeId) {
+            $scope.getNearbyPlaces = function(placeId, radius, type) {
+                type = type || '';
+                $scope.getPlaceDetailsByPlaceId(placeId, radius, type);
+
+            };
+
+            $scope.getPlaceDetailsByPlaceId = function(placeId, radius, type) {
                 var service = new google.maps.places.PlacesService(ctrlScope.map);
 
                 service.getDetails({
                     placeId: placeId
                 }, function(place, status) {
                     if (status === google.maps.places.PlacesServiceStatus.OK) {
-                        console.log(place);
                         ctrlScope.endPlace = place;
-                        console.log(ctrlScope.endPlace);
+                        //console.log(ctrlScope.endPlace);
+                        putMarkers(place, radius, type);
                     }
                 });
             }
