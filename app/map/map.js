@@ -2,14 +2,16 @@
 
 angular.module('myApp.map', [])
     .controller('MapCtrl',
-        function($scope, $log, $timeout) {
+        function($scope, $log, $timeout, googleApiKey, $http) {
+            var ctrlScope = $scope;
+            ctrlScope.endPlace = 1;
             var directionsService = new google.maps.DirectionsService;
             var directionsDisplay = new google.maps.DirectionsRenderer;
             if(navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(function(position){
                     $scope.$apply(function () {
                         $scope.position = position;
-                        $scope.map = new google.maps.Map(document.getElementById('map_canvas'), {
+                        ctrlScope.map = new google.maps.Map(document.getElementById('map_canvas'), {
                             zoom: 15,
                             center: {lat: position.coords.latitude, lng: position.coords.longitude},
                             mapTypeControl: true,
@@ -33,7 +35,7 @@ angular.module('myApp.map', [])
                                     $log.log(lon);
 
                                     $scope.marker = new google.maps.Marker({
-                                        map: $scope.map,
+                                        map: ctrlScope.map,
                                         position: new google.maps.LatLng(position.coords.latitude, position.coords.longitude),
                                         title: 'You are here'
                                     });
@@ -53,7 +55,6 @@ angular.module('myApp.map', [])
                             }, function(response, status) {
                                 if (status === google.maps.DirectionsStatus.OK) {
                                     directionsDisplay.setDirections(response);
-                                    console.log($scope.map);
                                     //directionsDisplay.setMap($scope.map.control.getGMap());
                                     directionsDisplay.setPanel(document.getElementById('directionsList'));
                                     $scope.showList = true;
@@ -130,6 +131,7 @@ angular.module('myApp.map', [])
                             destination_place_id = place.place_id;
                             $scope.route(origin_place_id, destination_place_id, travel_mode,
                                 directionsService, directionsDisplay);
+                            ctrlScope.getNearbyPlaces(destination_place_id, 5000);
                         });
 
                         $scope.$watchCollection("marker.coords", function (newVal, oldVal) {
@@ -160,6 +162,46 @@ angular.module('myApp.map', [])
                     center: {lat: position.coords.latitude, lng: position.coords.longitude},
                     mapTypeControl: false,
                     mapTypeId: google.maps.MapTypeId.ROADMAP
+                });
+            }
+
+            $scope.getNearbyPlaces = function(placeId, radius, type) {
+                type = type || '';
+                $scope.getPlaceDetailsByPlaceId(placeId);
+                console.log(ctrlScope.endPlace);
+                if(ctrlScope.endPlace) {
+                    $http({
+                        method: 'GET',
+                        url: 'https://maps.googleapis.com/maps/api/place/nearbysearch/json',
+                        data: {
+                            key: googleApiKey,
+                            location: ctrlScope.endPlace.geometry.location,
+                            radius: radius,
+                            type: type
+                        }
+                    }).then(function successCallback(response) {
+                        console.log(response);
+                        // this callback will be called asynchronously
+                        // when the response is available
+                    }, function errorCallback(response) {
+                        console.log(response);
+                        // called asynchronously if an error occurs
+                        // or server returns response with an error status.
+                    });
+                }
+            }
+
+            $scope.getPlaceDetailsByPlaceId = function(placeId) {
+                var service = new google.maps.places.PlacesService(ctrlScope.map);
+
+                service.getDetails({
+                    placeId: placeId
+                }, function(place, status) {
+                    if (status === google.maps.places.PlacesServiceStatus.OK) {
+                        console.log(place);
+                        ctrlScope.endPlace = place;
+                        console.log(ctrlScope.endPlace);
+                    }
                 });
             }
         });

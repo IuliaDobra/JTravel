@@ -1,7 +1,7 @@
 #map_canvas {
-    height: 72vh;
+    height: 90vh;
     position: relative;
-    width: 60vw;
+    width: 70vw;
     float: left;
 }
 
@@ -47,7 +47,9 @@
 }
 
 #directionsList {
-    height:20vh;
-    width: 20vw;
+    width: 27vw;
+    height: 90vh;
+    overflow: auto;
     position: relative;
+    float: right;
 }

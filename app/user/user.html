@@ -1,0 +1,30 @@
+<div class="container">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="text" class="form-control" name="email" id="email" placeholder="Your email" ng-model="createEmail">
+            </div>
+            <div class="form-group">
+                <label for="password">Email</label>
+                <input type="password" class="form-control" name="password" id="password" placeholder="Your password" ng-model="createPassword">
+            </div>
+
+            <input type="button" class="btn btn-primary" ng-click="createUser()" value="Create user">
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="text" class="form-control" name="email" id="email" placeholder="Your email" ng-model="authEmail">
+            </div>
+            <div class="form-group">
+                <label for="password">Email</label>
+                <input type="password" class="form-control" name="password" id="password" placeholder="Your password" ng-model="authPassword">
+            </div>
+
+            <input type="button" class="btn btn-primary" ng-click="authUser()" value="Auth user">
+        </div>
+    </div>
+</div>
+
+
