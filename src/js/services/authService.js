@@ -3,37 +3,40 @@ import BaseInjectable from '../BaseInjectable';
 class AuthenticationService extends BaseInjectable {
     constructor(...injectables) {
         super(injectables, AuthenticationService.$inject);
-        this.ref = new Firebase("https://jtravel.firebaseio.com");
     }
 
     createUser(createEmail, createPassword) {
-        this.ref.createUser({
-            email    : createEmail,
-            password : createPassword
-        }, function(error, userData) {
-            if (error) {
-                console.log("Error creating user:", error);
-            } else {
-                console.log("Successfully created user account with uid:", userData.uid);
-            }
+        var userData = firebase.auth().createUserWithEmailAndPassword(createEmail, createPassword).catch(function(error) {
+            // Handle Errors here.
+            //var errorCode = error.code;
+            //var errorMessage = error.message;
+            // ...
+            console.log("Error creating user:", error.message);
         });
+
+        if(userData) {
+            console.log("Successfully created user account with uid:", userData.uid);
+        }
     }
 
     authUser(authEmail, authPassword) {
-        this.ref.authWithPassword({
-            email    : authEmail,
-            password : authPassword
-        }, (error, authData) => {
+        var userData = firebase.auth().signInWithEmailAndPassword(authEmail, authPassword).catch(function(error) {
+            // Handle Errors here.
+            //var errorCode = error.code;
+            //var errorMessage = error.message;
+            // ...
             if (error) {
-                console.log("Login Failed!", error);
+                console.log("Login Failed!", error.message);
                 return false;
-            } else {
-                console.log("Authenticated successfully with payload:", authData);
-                this.$cookies.put('uid', authData.uid);
-                this.$state.go('master.dashboard');
-                return true;
             }
         });
+
+        if(userData) {
+            console.log("Authenticated successfully with payload:", userData);
+            this.$cookies.put('uid', userData.uid);
+            this.$state.go('master.dashboard');
+            return true;
+        }
     }
 
     logout() {

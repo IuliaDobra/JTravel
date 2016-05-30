@@ -57,7 +57,7 @@
     "angular-ui-router": "^0.2.15",
     "angular-ui-tree": "^2.14.0",
     "bootstrap-sass": "^3.3.6",
-    "firebase": "^2.4.2",
+    "firebase": "^3.0.3",
     "gulp": "^3.9.1",
     "jquery": "^2.1.4",
     "lodash": "^4.6.1",

@@ -121,10 +121,64 @@ class DashboardController extends BaseInjectable {
             // the other place ID
             _this.destinationPlaceId = place.place_id;
             _this.route(_this.directionsService, _this.directionsDisplay);
+
+            _this.searchNearbyPlaces(place.geometry.location, 500, ['restaurant']);
         });
     };
 
+    searchNearbyPlaces(location, radius, type) {
+        var request = {
+            location: location,
+            radius: radius,
+            types: type
+        };
+        var _this = this;
+        var service = new google.maps.places.PlacesService(this.map);
+        service.nearbySearch(request, function(results, status) {
+            if (status == google.maps.places.PlacesServiceStatus.OK) {
+                for (var i = 0; i < results.length; i++) {
+                    var place = results[i];
+                    // If the request succeeds, draw the place location on
+                    // the map as a marker, and register an event to handle a
+                    // click on the marker.
+                    _this.setMarker(place.place_id);
+                }
+            }
+        });
+    };
 
+    setMarker(placeId) {
+        var _map = this.map;
+
+        var request = {
+            placeId: placeId
+        };
+
+        var service = new google.maps.places.PlacesService(_map);
+        var infowindow = new google.maps.InfoWindow();
+
+        service.getDetails(request, function (place, status) {
+            if (status == google.maps.places.PlacesServiceStatus.OK) {
+                // If the request succeeds, draw the place location on the map
+                // as a marker, and register an event to handle a click on the marker.
+                var marker = new google.maps.Marker({
+                    map: _map,
+                    position: place.geometry.location
+                });
+
+                google.maps.event.addListener(marker, 'click', function() {
+                    infowindow.setContent('<div><strong>' + place.name + '</strong><br>' +
+                        'Place ID: ' + place.place_id + '<br>' +
+                        place.formatted_address + '</div>');
+                    infowindow.open(_map, this);
+                });
+
+                _map.panTo(place.geometry.location);
+
+                console.log(place);
+            }
+        });
+    }
 }
 
 DashboardController.$inject = [

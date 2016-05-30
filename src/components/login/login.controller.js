@@ -14,7 +14,7 @@ class LoginController extends BaseInjectable {
 
     authUser() {
         if (this.authService.authUser(this.authEmail, this.authPassword)) {
-            $state.go('master.dashboard');
+            this.$state.go('master.dashboard');
         }
     }
 }
