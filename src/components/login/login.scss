@@ -1,0 +1,32 @@
+.login {
+  background: url("../../assets/images/background.jpg") no-repeat;
+  background-size: cover;
+  height: 100vh;
+  
+  .container {
+    .login-register, .login-authenticate {
+      margin-top: 25vh;
+      margin-bottom: 25vh;
+      padding: 0 25px;
+      color: white;
+      .center-buttons {
+        text-align: center;
+      }
+    }
+
+    .ghost {
+      transition: all 0.3s ease-in;
+      background: none;
+      border: 2px solid white;
+      min-width: 100px;
+      font-weight: bold;
+      &:hover {
+        transition: all 0.3s ease-in;
+        background: white;
+        color: #31708f;
+        border: 2px solid white;
+        font-weight: bold;
+      }
+    }
+  }
+}

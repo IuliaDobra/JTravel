@@ -7,12 +7,13 @@ import toastr from 'angular-toastr';
 import appConfig from './js/config';
 import appRunBlock from './js/run';
 import commonModules from './common/common';
-import componentsModule from './components/components'
-import authService from './js/services/authService'
+import componentsModule from './components/components';
+import authService from './js/services/authService';
+import firebase from '../node_modules/firebase/firebase';
+
 //import autocomplete from './js/lib/autocomplete.min'
 import angularCookies from 'angular-cookies';
 //import ngMap from './js/lib/ng-map';
-import Firebase from 'firebase';
 //import googleMaps from './js/lib/angular-google-maps';
 
 // CSS entry point

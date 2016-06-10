@@ -1,4 +1,5 @@
 import loginComponent from './login.component';
+import './login.scss';
 
 let loginModule = angular.module('jtravel.login', [
 
