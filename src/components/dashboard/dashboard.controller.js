@@ -8,6 +8,7 @@ class DashboardController extends BaseInjectable {
         this.directionsDisplay = new google.maps.DirectionsRenderer;
 
         this.getLocation();
+        this.databaseVector = [];
 
         this.travelMode = google.maps.TravelMode.WALKING;
         this.travelModes = {
@@ -15,6 +16,8 @@ class DashboardController extends BaseInjectable {
             transit: google.maps.TravelMode.TRANSIT,
             driving: google.maps.TravelMode.DRIVING
         }
+
+        this.database = firebase.database();
     }
 
     getLocation() {
@@ -142,13 +145,17 @@ class DashboardController extends BaseInjectable {
                     // the map as a marker, and register an event to handle a
                     // click on the marker.
                     _this.setMarker(place.place_id);
+                    _this.putPlaceInDb(place.place_id);
                 }
             }
         });
+
+        this.putPlaceInDb();
     };
 
     setMarker(placeId) {
         var _map = this.map;
+        var _this = this;
 
         var request = {
             placeId: placeId
@@ -167,22 +174,63 @@ class DashboardController extends BaseInjectable {
                 });
 
                 google.maps.event.addListener(marker, 'click', function() {
-                    infowindow.setContent('<div><strong>' + place.name + '</strong><br>' +
-                        'Place ID: ' + place.place_id + '<br>' +
-                        place.formatted_address + '</div>');
+                    var HTML = '';
+                    HTML +=
+                        '<div ng-controller="DashboardController">' +
+                        '   <strong>' + place.name + '</strong><br>' +
+                            place.formatted_address + '<br><br>' +
+                            '<button class="btn btn-primary" ng-click="addPlaceToItinerary(' + place.place_id + ')">Add to itinerary</button>' +
+                        '</div>';
+
+                    var compiled = $compile(HTML)($scope);
+
+                    infowindow.setContent({
+                        content: compiled[0]
+                    });
+
+                    google.maps.event.addDomListener(window, 'load', initialize);
+
                     infowindow.open(_map, this);
                 });
 
                 _map.panTo(place.geometry.location);
+            }
+        });
+    }
 
-                console.log(place);
+    putPlaceInDb(placeId) {
+        var userId = this.authService.isAuthenticated();
+        firebase.database().ref('places').orderByValue().equalTo(placeId).on('value', function(snapshot) {
+            if(!snapshot.val()) {
+                var newPlaceKey = firebase.database().ref().child('places').push().key;
+                var updates = {};
+                updates['/places/' + newPlaceKey] = placeId;
+                updates['/user-places/' + userId + '/' + newPlaceKey] = placeId;
+
+                return firebase.database().ref().update(updates);
+            }
+        });
+    }
+
+    addPlaceToItinerary(placeId) {
+        console.log('asd');
+        var userId = this.authService.isAuthenticated();
+        firebase.database().ref('user-itinerary').child(userId).orderByValue().equalTo(placeId).on('value', function(snapshot) {
+            if(!snapshot.val()) {
+                var newPlaceKey = firebase.database().ref('user-itinerary').child(userId).push().key;
+                var updates = {};
+                updates['/user-itinerary/' + userId + '/' + newPlaceKey] = placeId;
+
+                return firebase.database().ref().update(updates);
             }
         });
     }
 }
 
 DashboardController.$inject = [
-    '$scope'
+    '$scope',
+    '$compile',
+    'authService'
 ];
 
 export default DashboardController;

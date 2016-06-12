@@ -20,7 +20,7 @@ class AuthenticationService extends BaseInjectable {
     }
 
     authUser(authEmail, authPassword) {
-        var userData = firebase.auth().signInWithEmailAndPassword(authEmail, authPassword).catch(function(error) {
+        firebase.auth().signInWithEmailAndPassword(authEmail, authPassword).catch(function(error) {
             // Handle Errors here.
             //var errorCode = error.code;
             //var errorMessage = error.message;
@@ -30,6 +30,8 @@ class AuthenticationService extends BaseInjectable {
                 return false;
             }
         });
+
+        var userData = firebase.auth().currentUser;
 
         if(userData) {
             console.log("Authenticated successfully with payload:", userData);

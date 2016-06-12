@@ -11,6 +11,7 @@ let appConfig = function(toastrConfig, $urlRouterProvider) {
     };
 
     firebase.initializeApp(config);
+    var database = firebase.database();
 
     $urlRouterProvider.otherwise('/login');
 };
