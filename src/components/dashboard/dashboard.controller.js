@@ -179,16 +179,21 @@ class DashboardController extends BaseInjectable {
                         '<div ng-controller="DashboardController">' +
                         '   <strong>' + place.name + '</strong><br>' +
                             place.formatted_address + '<br><br>' +
-                            '<button class="btn btn-primary" ng-click="addPlaceToItinerary(' + place.place_id + ')">Add to itinerary</button>' +
+                            '<button class="btn btn-primary" data-id="' + place.place_id + '" id="add-place-to-itinerary-button">Add to itinerary</button>' +
                         '</div>';
 
-                    var compiled = $compile(HTML)($scope);
-
-                    infowindow.setContent({
-                        content: compiled[0]
+                    $(document).ready(function() {
+                       $(document).on('click', '#add-place-to-itinerary-button', function() {
+                           var placeId = $(this).data('id');
+                           _this.addPlaceToItinerary(placeId);
+                       });
                     });
 
-                    google.maps.event.addDomListener(window, 'load', initialize);
+                    //var compiled = $compile(HTML)($scope);
+                    //
+                    infowindow.setContent(HTML);
+
+                    //google.maps.event.addDomListener(window, 'load', initialize);
 
                     infowindow.open(_map, this);
                 });
@@ -213,7 +218,6 @@ class DashboardController extends BaseInjectable {
     }
 
     addPlaceToItinerary(placeId) {
-        console.log('asd');
         var userId = this.authService.isAuthenticated();
         firebase.database().ref('user-itinerary').child(userId).orderByValue().equalTo(placeId).on('value', function(snapshot) {
             if(!snapshot.val()) {
@@ -225,6 +229,8 @@ class DashboardController extends BaseInjectable {
             }
         });
     }
+
+
 }
 
 DashboardController.$inject = [
