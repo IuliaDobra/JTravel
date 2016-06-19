@@ -18,6 +18,10 @@ class DashboardController extends BaseInjectable {
         }
 
         this.database = firebase.database();
+        this.place = null;
+
+        this.startDate = null;
+        this.endDate = null;
     }
 
     getLocation() {
@@ -145,12 +149,9 @@ class DashboardController extends BaseInjectable {
                     // the map as a marker, and register an event to handle a
                     // click on the marker.
                     _this.setMarker(place.place_id);
-                    _this.putPlaceInDb(place.place_id);
                 }
             }
         });
-
-        this.putPlaceInDb();
     };
 
     setMarker(placeId) {
@@ -179,22 +180,17 @@ class DashboardController extends BaseInjectable {
                         '<div ng-controller="DashboardController">' +
                         '   <strong>' + place.name + '</strong><br>' +
                             place.formatted_address + '<br><br>' +
-                            '<button class="btn btn-primary" data-id="' + place.place_id + '" id="add-place-to-itinerary-button">Add to itinerary</button>' +
+                            '<button class="btn btn-primary" data-id="' + place.place_id + '" id="add-place-to-itinerary-button-' + place.place_id + '">Add to itinerary</button>' +
                         '</div>';
 
                     $(document).ready(function() {
-                       $(document).on('click', '#add-place-to-itinerary-button', function() {
+                       $(document).on('click', '#add-place-to-itinerary-button-' + place.place_id, function() {
                            var placeId = $(this).data('id');
                            _this.addPlaceToItinerary(placeId);
                        });
                     });
 
-                    //var compiled = $compile(HTML)($scope);
-                    //
                     infowindow.setContent(HTML);
-
-                    //google.maps.event.addDomListener(window, 'load', initialize);
-
                     infowindow.open(_map, this);
                 });
 
@@ -203,31 +199,186 @@ class DashboardController extends BaseInjectable {
         });
     }
 
-    putPlaceInDb(placeId) {
-        var userId = this.authService.isAuthenticated();
-        firebase.database().ref('places').orderByValue().equalTo(placeId).on('value', function(snapshot) {
-            if(!snapshot.val()) {
-                var newPlaceKey = firebase.database().ref().child('places').push().key;
-                var updates = {};
-                updates['/places/' + newPlaceKey] = placeId;
-                updates['/user-places/' + userId + '/' + newPlaceKey] = placeId;
+    //putPlaceInDb(placeId) {
+    //    var userId = this.authService.isAuthenticated();
+    //    this.mapsService.getPlaceDetailByPlaceId(placeId, this.map);
+    //    firebase.database().ref('places').orderByValue().equalTo(placeId).on('value', function(snapshot) {
+    //        if(!snapshot.val()) {
+    //            var newPlaceKey = firebase.database().ref().child('places').push().key;
+    //            var updates = {};
+    //            updates['/places/' + newPlaceKey] = placeId;
+    //            updates['/user-places/' + userId + '/' + newPlaceKey] = placeId;
+    //
+    //            return firebase.database().ref().update(updates);
+    //        }
+    //    });
+    //}
 
-                return firebase.database().ref().update(updates);
+    addPlaceToItinerary(placeId) {
+        var userId = this.authService.isAuthenticated();
+        var itineraryId = this.$cookies.get('itinerary_key');
+        var service = new google.maps.places.PlacesService(this.map);
+
+        var request = {
+            placeId: placeId
+        };
+
+        service.getDetails(request, (place, status) => {
+            if (status == google.maps.places.PlacesServiceStatus.OK) {
+                firebase.database().ref('itinerary').child(userId).child(itineraryId).child('places').orderByKey().equalTo(placeId).on('value', function(snapshot) {
+                    if(!snapshot.val()) {
+                        var updates = {};
+                        var placeDetailsUpdate = {};
+                        if(!!place.opening_hours) {
+                            var open_now = place.opening_hours.open_now;
+                        } else {
+                            var open_now = false;
+                        }
+                        var openingHours = {
+                            open_now: open_now
+                        };
+                        var photos = {};
+                        var review = {};
+                        var placeDetails = {
+                            placeId: placeId
+                        };
+
+                        if(!!place.name) {
+                            placeDetails['name'] = place.name;
+                        }
+
+                        if(!!place.rating) {
+                            placeDetails['rating'] = place.rating;
+                        }
+
+                        if(!!place.formatted_address) {
+                            placeDetails['formatted_address'] = place.formatted_address;
+                        }
+
+                        if(!!place.formatted_phone_number) {
+                            placeDetails['formatted_phone_number'] = place.formatted_phone_number;
+                        }
+
+                        if(!!place.url) {
+                            placeDetails['url'] = place.url;
+                        }
+
+                        if(!!place.website) {
+                            placeDetails['website'] = place.website;
+                        }
+
+                        if(!!place.opening_hours) {
+                            if(!!place.opening_hours.weekday_text) {
+                                $.each(place.opening_hours.weekday_text, function(index, value) {
+                                    var newOpeningHoursKey = firebase.database().ref('itinerary').child(userId).child(itineraryId).child('places').child('openingHours').push().key;
+                                    updates['/itinerary/' + userId + '/' + itineraryId + '/places/' + placeId + '/openingHours/' + newOpeningHoursKey ] = value;
+                                });
+                            }
+                        }
+                        console.log(place);
+                        if(!!place.photos) {
+                            $.each(place.photos, function(index, value) {
+                                var img = value.getUrl({
+                                    'maxWidth': value.width,
+                                    'maxHeight': value.height
+                                });
+                                var newPhotosKey = firebase.database().ref('itinerary').child(userId).child(itineraryId).child('places').child('photos').push().key;
+                                updates['/itinerary/' + userId + '/' + itineraryId + '/places/' + placeId + '/photos/' + newPhotosKey ] = img;
+                            });
+                        }
+
+                        if(!!place.reviews) {
+                            $.each(place.reviews, function (index, value) {
+                                if(!!value.author_name) {
+                                    review['author_name'] = value.author_name;
+                                }
+
+                                if(!!value.author_url) {
+                                    review['author_url'] = value.author_url;
+                                }
+
+                                if(!!value.language) {
+                                    review['language'] = value.language;
+                                }
+
+                                if(!!value.profile_photo_url) {
+                                    review['profile_photo_url'] = value.profile_photo_url;
+                                }
+
+                                if(!!value.rating) {
+                                    review['rating'] = value.rating;
+                                }
+
+                                if(!!value.text) {
+                                    review['text'] = value.text;
+                                }
+
+                                if(!!value.time) {
+                                    review['time'] = value.time;
+                                }
+
+                                var newReviewsKey = firebase.database().ref('itinerary').child(userId).child(itineraryId).child('places').child('reviews').push().key;
+                                updates['/itinerary/' + userId + '/' + itineraryId + '/places/' + placeId + '/reviews/' + newReviewsKey ] = review;
+                            });
+                        }
+
+                        placeDetailsUpdate['/itinerary/' + userId + '/' + itineraryId + '/places/' + placeId] = placeDetails;
+
+                        firebase.database().ref().update(placeDetailsUpdate);
+                        firebase.database().ref().update(updates);
+                    } else {
+                        console.log('place already in itinerary');
+                    }
+                });
             }
         });
     }
 
-    addPlaceToItinerary(placeId) {
-        var userId = this.authService.isAuthenticated();
-        firebase.database().ref('user-itinerary').child(userId).orderByValue().equalTo(placeId).on('value', function(snapshot) {
-            if(!snapshot.val()) {
-                var newPlaceKey = firebase.database().ref('user-itinerary').child(userId).push().key;
-                var updates = {};
-                updates['/user-itinerary/' + userId + '/' + newPlaceKey] = placeId;
+    getPlaceDetailByPlaceId(id, map) {
+        var service = new google.maps.places.PlacesService(map);
 
-                return firebase.database().ref().update(updates);
+        var request = {
+            placeId: id
+        };
+
+        service.getDetails(request, (place, status) => {
+            if (status == google.maps.places.PlacesServiceStatus.OK) {
+                return place;
             }
         });
+    }
+
+    createItinerary() {
+        var userId = this.authService.isAuthenticated();
+        var newItineraryKey = firebase.database().ref('itinerary').child(userId).push().key;
+        var updates = {};
+        updates['/itinerary/' + userId + '/' + newItineraryKey] = {
+            originPlaceId: this.originPlaceId,
+            destinationPlaceId: this.destinationPlaceId,
+            startDate: this.startDate,
+            endDate: this.endDate,
+            enabled: 1,
+            places: false
+        };
+
+        this.$cookies.put('itinerary_key', newItineraryKey);
+        return firebase.database().ref().update(updates);
+    }
+
+    finishItinerary() {
+        var userId = this.authService.isAuthenticated();
+        var itineraryId = this.$cookies.get('itinerary_key');
+        var updates = {};
+        updates['/itinerary/' + userId + '/' + itineraryId] = {
+            originPlaceId: this.originPlaceId,
+            destinationPlaceId: this.destinationPlaceId,
+            startDate: this.startDate,
+            endDate: this.endDate,
+            enabled: 0,
+        };
+
+        this.$cookies.remove('itinerary_key');
+        return firebase.database().ref().update(updates);
     }
 
 
@@ -236,7 +387,10 @@ class DashboardController extends BaseInjectable {
 DashboardController.$inject = [
     '$scope',
     '$compile',
-    'authService'
+    '$cookies',
+    'authService',
+    'mapsService',
+    'datepickerService'
 ];
 
 export default DashboardController;

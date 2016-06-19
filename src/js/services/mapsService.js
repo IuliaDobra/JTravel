@@ -12,7 +12,7 @@ class MapsService extends BaseInjectable {
             placeId: id
         };
 
-        service.getDetails(request, function (place, status) {
+        service.getDetails(request, (place, status) => {
             if (status == google.maps.places.PlacesServiceStatus.OK) {
                 return place;
             }
@@ -21,32 +21,13 @@ class MapsService extends BaseInjectable {
 
     getItinerariesByUserId() {
         let userId = this.authService.isAuthenticated();
-        let data = [];
-        let _this = this;
 
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition((position) => {
-                var map = new google.maps.Map(document.getElementById('map_canvas'), {
-                    zoom: 15,
-                    center: {lat: position.coords.latitude, lng: position.coords.longitude},
-                    mapTypeControl: true,
-                    mapTypeId: google.maps.MapTypeId.ROADMAP
-                });
-
-                firebase.database().ref('user-itinerary').child(userId).on('value', function(r) {
-                    if(r.val()) {
-                        angular.forEach(r.val(), function(value, key) {
-                            let place = _this.getPlaceDetailByPlaceId(value, map);
-                            console.log(place);
-                            data.push(place);
-                        });
-                        return data;
-                    }
-                });
-            });
-        } else {
-            this.error = "Geolocation is not supported by this browser.";
-        }
+        firebase.database().ref('itinerary').child(userId).on('value', function(r) {
+            if(r.val()) {
+                console.log(r.val());
+                return r.val();
+            }
+        });
     }
 
 }
@@ -55,7 +36,7 @@ MapsService.$inject = [
     '$rootScope',
     '$cookies',
     '$state',
-    'authService'
+    'authService',
 ];
 
 export default MapsService;

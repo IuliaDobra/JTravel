@@ -10,6 +10,7 @@ import commonModules from './common/common';
 import componentsModule from './components/components';
 import authService from './js/services/authService';
 import mapsService from './js/services/mapsService';
+import datepickerService from './js/services/datepickerService';
 import firebase from '../node_modules/firebase/firebase';
 
 //import autocomplete from './js/lib/autocomplete.min'
@@ -35,4 +36,5 @@ angular.module('seed', [
     .config(appConfig)
     .run(appRunBlock)
     .service('authService', authService)
-    .service('mapsService', mapsService);
+    .service('mapsService', mapsService)
+    .service('datepickerService', datepickerService);
