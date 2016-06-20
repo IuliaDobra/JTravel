@@ -4,7 +4,7 @@
   "description": "",
   "main": "app.js",
   "scripts": {},
-  "author": "Razvan Ciuca",
+  "author": "Iulia Dobra",
   "license": "MIT",
   "babel": {
     "presets": [
@@ -45,6 +45,7 @@
     "angular": "^1.5.0-rc.2",
     "angular-cookies": "^1.5.5",
     "angular-google-maps": "^2.3.3",
+    "angular-material": "^1.0.5",
     "angular-resource": "^1.5.0",
     "angular-sanitize": "^1.5.0-rc.2",
     "angular-schema-form": "^0.8.12",

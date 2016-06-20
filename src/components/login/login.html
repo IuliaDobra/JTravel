@@ -1,46 +1,41 @@
-<div class="login">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-6">
-                <div class="login-register">
-                    <div class="page-header">
-                        <h1>Register</h1>
-                    </div>
-                    <div class="form-group">
-                        <label for="createEmail">Add your e-mail</label>
-                        <input type="text" class="form-control" name="email"  id="createEmail" placeholder="Your email" ng-model="vm.createEmail">
-                    </div>
-                    <div class="form-group">
-                        <label for="createPassword">Choose a password</label>
-                        <input type="password" class="form-control" name="password" id="createPassword" placeholder="Your password" ng-model="vm.createPassword">
-                    </div>
-                    <div class="center-buttons">
-                        <input type="button" class="ghost btn btn-primary" ng-click="vm.createUser()" value="Create user">
-                    </div>
-                </div>
+<div class="login" layout="row" ng-cloak>
+    <md-content layout="column" flex="50">
+        <form name="projectForm" class="login-register">
+            <div class="page-header">
+                <h1>Register</h1>
             </div>
-
-            <div class="col-md-6">
-                <div class="login-authenticate">
-                    <div class="page-header">
-                        <h1>Login</h1>
-                    </div>
-                    <div class="form-group">
-                        <label for="email">E-mail</label>
-                        <input type="text" class="form-control" name="email" id="email" placeholder="Your email" ng-model="vm.authEmail">
-                    </div>
-                    <div class="form-group">
-                        <label for="password">Password</label>
-                        <input type="password" class="form-control" name="password" id="password" placeholder="Your password" ng-model="vm.authPassword">
-                    </div>
-
-                    <div class="center-buttons">
-                        <input type="button" class="ghost btn btn-primary" ng-click="vm.authUser()" value="Login">
-                    </div>
-                </div>
+            <md-input-container class="md-block">
+                <label for="createEmail">Add your e-mail</label>
+                <input type="text" class="form-control" name="email"  id="createEmail" placeholder="Your email" ng-model="vm.createEmail">
+            </md-input-container>
+            <md-input-container class="md-block">
+                <label for="createPassword">Choose a password</label>
+                <input type="password" class="form-control" name="password" id="createPassword" placeholder="Your password" ng-model="vm.createPassword">
+            </md-input-container>
+            <div class="center-buttons">
+                <input type="button" class="ghost btn btn-primary" ng-click="vm.createUser()" value="Create user">
             </div>
-        </div>
-    </div>
+        </form>
+    </md-content>
+
+    <md-content layout="column" flex="50">
+        <form name="projectForm" class="login-authenticate">
+            <div class="page-header">
+                <h1>Login</h1>
+            </div>
+            <md-input-container class="md-block">
+                <label for="email">E-mail</label>
+                <input type="text" class="form-control" name="email" id="email" placeholder="Your email" ng-model="vm.authEmail">
+            </md-input-container>
+            <md-input-container class="md-block">
+                <label for="password">Password</label>
+                <input type="password" class="form-control" name="password" id="password" placeholder="Your password" ng-model="vm.authPassword">
+            </md-input-container>
+            <div class="center-buttons">
+                <input type="button" class="ghost btn btn-primary" ng-click="vm.authUser()" value="Login">
+            </div>
+        </form>
+    </md-content>
 </div>
 
 
