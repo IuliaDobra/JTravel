@@ -381,7 +381,9 @@ class DashboardController extends BaseInjectable {
         var updates = {};
         updates['/itinerary/' + userId + '/' + itineraryId] = {
             originPlaceId: this.originPlaceId,
+            originPlaceName: this.originPlaceName,
             destinationPlaceId: this.destinationPlaceId,
+            destinationPlaceName: this.destinationPlaceName,
             startDate: this.startDate,
             endDate: this.endDate,
             enabled: 0,
