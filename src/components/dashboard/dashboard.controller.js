@@ -285,18 +285,20 @@ class DashboardController extends BaseInjectable {
                         }
                         console.log(place);
                         if(!!place.photos) {
-                            $.each(place.photos, function(index, value) {
+                            var value = place.photos[0];
+                            //$.each(place.photos, function(index, value) {
                                 var img = value.getUrl({
                                     'maxWidth': value.width,
                                     'maxHeight': value.height
                                 });
-                                var newPhotosKey = firebase.database().ref('itinerary').child(userId).child(itineraryId).child('places').child('photos').push().key;
-                                updates['/itinerary/' + userId + '/' + itineraryId + '/places/' + placeId + '/photos/' + newPhotosKey ] = img;
-                            });
+                                //var newPhotosKey = firebase.database().ref('itinerary').child(userId).child(itineraryId).child('places').child('photos').push().key;
+                                updates['/itinerary/' + userId + '/' + itineraryId + '/places/' + placeId + '/photo' ] = img;
+                            //});
                         }
 
                         if(!!place.reviews) {
                             $.each(place.reviews, function (index, value) {
+                                review = {};
                                 if(!!value.author_name) {
                                     review['author_name'] = value.author_name;
                                 }
