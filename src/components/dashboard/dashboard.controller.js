@@ -92,7 +92,9 @@ class DashboardController extends BaseInjectable {
     setRouteDirections() {
         var _this = this;
         this.originPlaceId = null;
+        this.originPlaceName = null;
         this.destinationPlaceId = null;
+        this.destinationPlaceName = null;
         this.travelMode = google.maps.TravelMode.WALKING;
         this.directionsDisplay.setMap(this.map);
 
@@ -115,6 +117,7 @@ class DashboardController extends BaseInjectable {
             // If the place has a geometry, store its place ID and route if we have
             // the other place ID
             _this.originPlaceId = place.place_id;
+            _this.originPlaceName = place.name;
             _this.route(_this.directionsService, _this.directionsDisplay);
         });
 
@@ -131,6 +134,7 @@ class DashboardController extends BaseInjectable {
             // If the place has a geometry, store its place ID and route if we have
             // the other place ID
             _this.destinationPlaceId = place.place_id;
+            _this.destinationPlaceName = place.name;
             _this.route(_this.directionsService, _this.directionsDisplay);
 
             _this.searchNearbyPlaces(place.geometry.location, 500, ['restaurant']);
@@ -358,7 +362,9 @@ class DashboardController extends BaseInjectable {
         var updates = {};
         updates['/itinerary/' + userId + '/' + newItineraryKey] = {
             originPlaceId: this.originPlaceId,
+            originPlaceName: this.originPlaceName,
             destinationPlaceId: this.destinationPlaceId,
+            destinationPlaceName: this.destinationPlaceName,
             startDate: this.startDate,
             endDate: this.endDate,
             enabled: 1,
