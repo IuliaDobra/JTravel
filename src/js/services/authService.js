@@ -7,10 +7,6 @@ class AuthenticationService extends BaseInjectable {
 
     createUser(createEmail, createPassword) {
         var userData = firebase.auth().createUserWithEmailAndPassword(createEmail, createPassword).catch(function(error) {
-            // Handle Errors here.
-            //var errorCode = error.code;
-            //var errorMessage = error.message;
-            // ...
             console.log("Error creating user:", error.message);
         });
 
@@ -21,10 +17,6 @@ class AuthenticationService extends BaseInjectable {
 
     authUser(authEmail, authPassword) {
         firebase.auth().signInWithEmailAndPassword(authEmail, authPassword).catch(function(error) {
-            // Handle Errors here.
-            //var errorCode = error.code;
-            //var errorMessage = error.message;
-            // ...
             if (error) {
                 console.log("Login Failed!", error.message);
                 return false;

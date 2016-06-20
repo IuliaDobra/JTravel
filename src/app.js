@@ -11,6 +11,7 @@ import componentsModule from './components/components';
 import authService from './js/services/authService';
 import mapsService from './js/services/mapsService';
 import datepickerService from './js/services/datepickerService';
+import material from 'angular-material';
 import firebase from '../node_modules/firebase/firebase';
 
 //import autocomplete from './js/lib/autocomplete.min'
@@ -22,9 +23,11 @@ import angularCookies from 'angular-cookies';
 import './styles/index.scss';
 //import './styles/lib/autocomplete.min.css';
 import '../node_modules/angular-toastr/dist/angular-toastr.min.css';
+import '../node_modules/angular-material/angular-material.min.css';
 
 angular.module('seed', [
     uiRouter,
+    material,
     ngResource,
     commonModules.name,
     componentsModule.name,
