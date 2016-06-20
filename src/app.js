@@ -22,7 +22,6 @@ import angularCookies from 'angular-cookies';
 
 // CSS entry point
 import './styles/index.scss';
-//import './styles/lib/autocomplete.min.css';
 import '../node_modules/angular-toastr/dist/angular-toastr.min.css';
 import '../node_modules/angular-material/angular-material.min.css';
 
