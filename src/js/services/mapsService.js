@@ -19,12 +19,12 @@ class MapsService extends BaseInjectable {
         });
     }
 
-    getItinerariesByUserId() {
+    getItinerariesByUserId(callback) {
         let userId = this.authService.isAuthenticated();
 
         firebase.database().ref('itinerary').child(userId).on('value', function(r) {
             if(r.val()) {
-                console.log(r.val());
+                callback(r.val());
                 return r.val();
             }
         });

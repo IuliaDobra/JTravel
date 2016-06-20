@@ -13,7 +13,7 @@ function config($stateProvider) {
     $stateProvider
         .state('master.itinerary', {
             url: '/itinerary',
-            template: '<itinerary></itinerary>'
+            template: '<itinerary></itinerary>',
         });
 }
 

@@ -22,6 +22,10 @@ class DashboardController extends BaseInjectable {
 
         this.startDate = null;
         this.endDate = null;
+
+        $('button').click(function() {
+            $(this).toggleClass('expanded').siblings('div').slideToggle();
+        });
     }
 
     getLocation() {

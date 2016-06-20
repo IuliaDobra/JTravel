@@ -4,7 +4,9 @@ class ItineraryController extends BaseInjectable {
     constructor(...injectables) {
         super(injectables, ItineraryController.$inject);
 
-        this.itinerary = this.mapsService.getItinerariesByUserId();
+        this.mapsService.getItinerariesByUserId((r) => {
+            this.itinerary = r;
+        });
     }
 }
 
