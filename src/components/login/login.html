@@ -21,7 +21,7 @@
     <md-content layout="column" flex="50">
         <form name="projectForm" class="login-authenticate">
             <div class="page-header">
-                <h1>Login</h1>
+                <h1>Sign in</h1>
             </div>
             <md-input-container class="md-block">
                 <label for="email">E-mail</label>
@@ -32,12 +32,11 @@
                 <input type="password" class="form-control" name="password" id="password" placeholder="Your password" ng-model="vm.authPassword">
             </md-input-container>
             <div class="center-buttons">
-                <input type="button" class="ghost btn btn-primary" ng-click="vm.authUser()" value="Login">
+                <input type="button" class="ghost btn btn-primary" ng-click="vm.authUser()" value="Sign in">
+                <input type="button" class="ghost btn btn-primary" ng-click="vm.googleAuth()" value="Sign in with Google">
             </div>
         </form>
     </md-content>
-
-    <input type="button" class="host btn btn-primary" ng-click="vm.googleAuth()">
 </div>
 
 
