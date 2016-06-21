@@ -22,10 +22,22 @@ class DashboardController extends BaseInjectable {
 
         this.startDate = null;
         this.endDate = null;
+        
+        
 
         $('button').click(function() {
             $(this).toggleClass('expanded').siblings('div').slideToggle();
         });
+
+        this.isAuth();
+    }
+    
+    
+    isAuth() {
+        var userId = this.authService.isAuthenticated();
+        if(!userId) {
+            this.$state.go('login');
+        }
     }
 
     getLocation() {
@@ -404,7 +416,8 @@ DashboardController.$inject = [
     '$cookies',
     'authService',
     'mapsService',
-    'datepickerService'
+    'datepickerService',
+    '$state',
 ];
 
 export default DashboardController;
