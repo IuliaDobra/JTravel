@@ -3,11 +3,14 @@
     <div class="row">
         <div class="col-md-12">
             <div class="row originDestination">
-                <div class="col-md-6">
+                <div class="col-md-5">
                     From: {{itinerary.originPlaceName}}
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-5">
                     To: {{itinerary.destinationPlaceName}}
+                </div>
+                <div class="col-md-2 editButton" style="text-align: right;">
+                    <button class="btn btn-primary"><i class="fa fa-pencil-square-o"></i>Edit</button>
                 </div>
             </div>
             <h2>You will visit</h2>
@@ -37,9 +40,6 @@
                             <div ng-if="!place.openingHours">
                                 The opening hours have not been specified.
                             </div>
-                            <div class="editButton">
-                                <button class="btn btn-primary""><i class="fa fa-pencil-square-o"></i>Edit</button>
-                            </div>
                         </div>
                     </div>
                     <div class="row reviews">
@@ -50,6 +50,9 @@
                                 <a ng-href={{review.author_url}}>{{review.author_name}}</a>
                                 has given this location {{review.rating}} star(s).
                             </div>
+                            <div ng-if="!place.reviews">
+                                <h4 class="noReview">No one added a review yet.</h4>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -57,3 +60,10 @@
         </div>
     </div>
 </div>
+
+<footer>
+    <div class="copyright">
+        <h5>&copy; Iulia E. Dobra <br>
+            JTravel, 2016</h5>
+    </div>
+</footer>

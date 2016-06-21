@@ -1,5 +1,5 @@
 import DashboardComponent from './dashboard.component.js';
-import './dashboard.css';
+import './dashboard.scss';
 
 let DashboardModule = angular.module('jtravel.dashboard', [
 

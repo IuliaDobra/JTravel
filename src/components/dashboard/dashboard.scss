@@ -1,8 +1,38 @@
 #map_canvas {
-    height: 90vh;
+    height: 70vh;
     position: relative;
-    width: 70vw;
+    width: 100vw;
     float: left;
+}
+
+.inputs {
+    width: 100vw;
+    background-color: white;
+    padding: 10px 25px 25px 25px;
+    input[type="text"] {
+        margin-right: 20px;
+        background-color: #fff;
+        font-family: Roboto;
+        font-size: 15px;
+        font-weight: 300;
+        padding: 0 11px 0 13px;
+        text-overflow: ellipsis;
+        width: 200px;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+        border: none;
+        height: 32px;
+    }
+    .buttons {
+        float: right;
+
+        input[type="button"] {
+            margin-left: 20px;
+        }
+    }
+}
+
+.mapAndDirections {
+    width: 100vw;
 }
 
 .controls {
@@ -47,18 +77,23 @@
 }
 
 #directionsList {
-    width: 27vw;
-    height: 90vh;
+    width: 40vw;
+    background: #FFF;
+    height: 63vh;
     overflow: auto;
     position: relative;
-    float: right;
+    float: left;
+    z-index: 0;
+    left: 0;
+    padding-left: 5px;
+    top: -63vh;
 }
 
 /* Hamburger menu directions */
 
 .mobile {
     display: block;
-    position: fixed;
+    position: relative;
     width: 100%;
     top: 0;
 }
@@ -68,7 +103,7 @@
 .mobile button {
     position: absolute;
     top: 15px;
-    right: 15px;
+    right: 10px;
     border: 0;
     text-indent: 200%;
     overflow: hidden;
@@ -85,7 +120,7 @@
 .mobile button.expanded {
     -webkit-transform: rotate(90deg);
     transform: rotate(90deg);
-    background-color: transparent;
+    background-color: white;
     border: 0;
 }
 .mobile a {
@@ -107,4 +142,13 @@ a:focus {
 }
 article {
     padding: 0 30px 15px;
+}
+
+.copyright{
+    background-color: darkgrey;
+    background-size: cover;
+    margin: 0 auto;
+    color: white;
+    text-align: center;
+    padding: 10px;
 }

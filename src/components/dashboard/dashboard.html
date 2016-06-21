@@ -15,16 +15,30 @@
     <label for="changemode-driving">Driving</label>
 </div>
 
-<input type="text" name="start_date" ng-model="vm.startDate" class="has-datepicker">
-<input type="text" name="end_date" ng-model="vm.endDate" class="has-datepicker">
-
-<input type="button" class="btn btn-primary" ng-click="vm.createItinerary()" value="Create itinerary">
-<input type="button" class="btn btn-primary" ng-click="vm.finishItinerary()" value="Finish itinerary">
-
-<nav class="mobile">
-    <button>Toggle</button>
-    <div>
-        <div id="directionsList"></div>
+<div class="inputs">
+    <input type="text" name="start_date" ng-model="vm.startDate" class="has-datepicker" placeholder="Starting date...">
+    <input type="text" name="end_date" ng-model="vm.endDate" class="has-datepicker" placeholder="Ending date...">
+    <div class="buttons">
+        <input type="button" class="btn btn-primary" ng-click="vm.createItinerary()" value="Create itinerary">
+        <input type="button" class="btn btn-primary" ng-click="vm.finishItinerary()" value="Finish itinerary">
     </div>
-</nav>
-<div id="map_canvas"></div>
+
+</div>
+
+
+<div class="mapAndDirections">
+    <div id="map_canvas"></div>
+    <nav class="mobile">
+        <button>Toggle</button>
+        <div>
+            <div id="directionsList"></div>
+        </div>
+    </nav>
+</div>
+
+<footer>
+    <div class="copyright">
+        <h5>&copy; Iulia E. Dobra <br>
+            JTravel, 2016</h5>
+    </div>
+</footer>
