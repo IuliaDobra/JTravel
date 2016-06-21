@@ -22,12 +22,38 @@ class ItineraryController extends BaseInjectable {
             this.$state.go('login');
         }
     }
+
+    delete(itineraryId, placeId) {
+        var userId = this.authService.isAuthenticated();
+        firebase.database().ref('itinerary').child(userId).child(itineraryId).child('places').child(placeId).remove();
+    }
+
+    update(itineraryId) {
+        var userId = this.authService.isAuthenticated();
+        firebase.database().ref('itinerary').child(userId).orderByKey().equalTo(itineraryId).once('value', (r) => {
+            if(r.val()) {
+                firebase.database().ref('itinerary/' + userId + '/' + itineraryId).update({
+                    enabled: 1,
+                });
+
+                var itinerary = r.val()[Object.keys(r.val())[0]];
+                this.$cookies.put('isEdit', true);
+                this.$cookies.put('itinerary_key', itineraryId);
+                this.$cookies.put('startDate', itinerary.startDate);
+                this.$cookies.put('endDate', itinerary.endDate);
+                this.$cookies.put('destinationPlaceId', itinerary.destinationPlaceId);
+                this.$cookies.put('originPlaceId', itinerary.originPlaceId);
+                this.$state.go('master.dashboard');
+            }
+        });
+    }
 }
 
 ItineraryController.$inject = [
     '$cookies',
     '$state',
     '$scope',
+    '$rootScope',
     'authService',
     'mapsService',
     '$firebaseObject',

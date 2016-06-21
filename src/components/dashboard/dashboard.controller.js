@@ -22,8 +22,6 @@ class DashboardController extends BaseInjectable {
 
         this.startDate = null;
         this.endDate = null;
-        
-        
 
         $('button').click(function() {
             $(this).toggleClass('expanded').siblings('div').slideToggle();
@@ -50,7 +48,11 @@ class DashboardController extends BaseInjectable {
                     mapTypeControl: true,
                     mapTypeId: google.maps.MapTypeId.ROADMAP
                 });
+                if(this.$cookies.get('isEdit')) {
+                    this.setItineraryOnMap();
+                }
                 this.setRouteDirections();
+
             });
         } else {
             this.error = "Geolocation is not supported by this browser.";
@@ -103,9 +105,13 @@ class DashboardController extends BaseInjectable {
 
     setRouteDirections() {
         var _this = this;
-        this.originPlaceId = null;
+        if(!this.originPlaceId) {
+            this.originPlaceId = null;
+        }
         this.originPlaceName = null;
-        this.destinationPlaceId = null;
+        if(!this.destinationPlaceId) {
+            this.destinationPlaceId = null;
+        }
         this.destinationPlaceName = null;
         this.travelMode = google.maps.TravelMode.WALKING;
         this.directionsDisplay.setMap(this.map);
@@ -245,7 +251,7 @@ class DashboardController extends BaseInjectable {
 
         service.getDetails(request, (place, status) => {
             if (status == google.maps.places.PlacesServiceStatus.OK) {
-                firebase.database().ref('itinerary').child(userId).child(itineraryId).child('places').orderByKey().equalTo(placeId).on('value', function(snapshot) {
+                firebase.database().ref('itinerary').child(userId).child(itineraryId).child('places').orderByKey().equalTo(placeId).once('value', function(snapshot) {
                     if(!snapshot.val()) {
                         var updates = {};
                         var placeDetailsUpdate = {};
@@ -392,19 +398,39 @@ class DashboardController extends BaseInjectable {
     finishItinerary() {
         var userId = this.authService.isAuthenticated();
         var itineraryId = this.$cookies.get('itinerary_key');
-        var updates = {};
-        updates['/itinerary/' + userId + '/' + itineraryId] = {
-            originPlaceId: this.originPlaceId,
-            originPlaceName: this.originPlaceName,
-            destinationPlaceId: this.destinationPlaceId,
-            destinationPlaceName: this.destinationPlaceName,
-            startDate: this.startDate,
-            endDate: this.endDate,
-            enabled: 0,
+
+        this.$cookies.remove('isEdit');
+        this.$cookies.remove('startDate');
+        this.$cookies.remove('endDate');
+        this.$cookies.remove('destinationPlaceId');
+        this.$cookies.remove('originPlaceId');
+        this.$cookies.remove('itinerary_key');
+
+        firebase.database().ref('itinerary/' + userId + '/' + itineraryId).update({
+            enabled: 0
+        });
+    }
+
+    setItineraryOnMap() {
+        this.originPlaceId = this.$cookies.get('originPlaceId');
+        this.destinationPlaceId = this.$cookies.get('destinationPlaceId');
+
+        this.startDate = this.$cookies.get('startDate');
+        this.endDate = this.$cookies.get('endDate');
+
+        this.route(this.directionsService, this.directionsDisplay);
+
+        var service = new google.maps.places.PlacesService(this.map);
+
+        var request = {
+            placeId: this.destinationPlaceId
         };
 
-        this.$cookies.remove('itinerary_key');
-        return firebase.database().ref().update(updates);
+        service.getDetails(request, (place, status) => {
+            if (status == google.maps.places.PlacesServiceStatus.OK) {
+                this.searchNearbyPlaces(place.geometry.location, 25000, ['museum']);
+            }
+        });
     }
 
 

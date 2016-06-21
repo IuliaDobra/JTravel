@@ -19,6 +19,13 @@
     background-color: #F0F0F0;
     border-bottom: 1px solid darkgrey;
 
+    .fa-times {
+      position: absolute;
+      top: 30px;
+      right: 50px;
+      cursor: pointer;
+    }
+
     &:first-of-type {
       border-top: 1px solid darkgrey;
     }
