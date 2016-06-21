@@ -137,7 +137,7 @@ class DashboardController extends BaseInjectable {
             _this.destinationPlaceName = place.name;
             _this.route(_this.directionsService, _this.directionsDisplay);
 
-            _this.searchNearbyPlaces(place.geometry.location, 500, ['restaurant']);
+            _this.searchNearbyPlaces(place.geometry.location, 25000, ['museum']);
         });
     };
 

@@ -17,6 +17,10 @@
             <div class="row">
                 <div class="col-md-12" ng-repeat="place in itinerary.places">
                     <div class="row place">
+                        <h3 class="placeName">{{place.name}}</h3>
+                        <div>
+                            <i class="fa fa-times" style="position: absolute; top: 30px; right: 50px;"></i>
+                        </div>
                         <div class="image col-md-4" ng-if="place.photo">
                             <img src={{place.photo}}>
                         </div>
@@ -24,15 +28,11 @@
                             <img src="../.././assets/images/NoImageAvailable.png">
                         </div>
                         <div class="col-md-4">
-                            <label>Name: </label> {{place.name}} <br>
                             <label>Address: </label> {{place.formatted_address}} <br>
                             <label ng-if="place.formatted_phone_number">Phone:</label> {{place.formatted_phone_number}}<br>
                             <label ng-if="place.website">Website: </label> <a ng-href={{place.website}}>{{place.website}}</a>
                         </div>
                         <div class="col-md-4">
-                            <div>
-                                <i class="fa fa-times" style="position: absolute; top: 0; right: 0;"></i>
-                            </div>
                             <label>Opening Hours:</label>
                             <div ng-repeat="hours in place.openingHours" ng-if="place.openingHours">
                                 {{hours}}
