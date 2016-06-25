@@ -391,6 +391,7 @@ class DashboardController extends BaseInjectable {
             places: false
         };
 
+        window.alert("You just started a new itinerary");
         this.$cookies.put('itinerary_key', newItineraryKey);
         return firebase.database().ref().update(updates);
     }
