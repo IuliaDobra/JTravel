@@ -11,8 +11,8 @@
                 </div>
                 <div class="col-md-4 editButton" style="text-align: right;">
                     <button class="btn btn-primary" ng-click="vm.update(itineraryId)"><i class="fa fa-pencil-square-o"></i>Edit</button>
-                    <button class="btn btn-success" id="view-itinerary-button" ng-click="vm.toggleView(itineraryId)"><i class="fa fa-eye"></i>View</button>
-                    <!--<button class="btn btn-success" id="view-itinerary-button" ui-sref="/#/jtravel/itinerary/({itineraryId: itineraryId})"><i class="fa fa-eye"></i>View</button>-->
+                    <!--<button class="btn btn-success" id="view-itinerary-button" ng-click="vm.toggleView()"><i class="fa fa-eye"></i>View</button>-->
+                    <button class="btn btn-success" id="view-itinerary-button" ui-sref="master.itinerary({itineraryId: itineraryId})"><i class="fa fa-eye"></i>View</button>
                 </div>
             </div>
             <div class="row places-container" ng-show="vm.isVisible">

@@ -15,6 +15,7 @@ import material from 'angular-material';
 import angularFire from '../node_modules/angularfire/dist/angularfire';
 import firebase from '../node_modules/firebase/firebase';
 import angularCookies from 'angular-cookies';
+import AngularPrint from './js/lib/angularPrint';
 
 // CSS entry point
 import './styles/index.scss';
@@ -32,6 +33,7 @@ angular.module('seed', [
     'toastr',
     'ngCookies',
     'google-maps',
+    'AngularPrint'
 ])
 
     .config(appConfig)

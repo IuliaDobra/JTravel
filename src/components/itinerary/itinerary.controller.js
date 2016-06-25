@@ -50,9 +50,10 @@ class ItineraryController extends BaseInjectable {
         });
     }
 
-    toggleView() {
-        this.isVisible = !this.isVisible;
-        return this.isVisible;
+    toggleView(id) {
+        this.$state.go('master.itinerary.print', {itineraryId: id});
+        //this.isVisible = !this.isVisible;
+        //return this.isVisible;
     }
 }
 
