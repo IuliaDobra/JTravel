@@ -34,15 +34,22 @@ class AuthenticationService extends BaseInjectable {
     }
 
     logout() {
-        //TODO sign out with firebase https://firebase.google.com/docs/auth/web/password-auth#next_steps
-        this.$cookies.remove('uid');
-        this.$state.go('login');
+        firebase.auth().signOut().then(() => {
+            this.$cookies.remove('uid');
+            this.$state.go('login');
+        }, function(error) {
+            // An error happened.
+        });
     }
 
     isAuthenticated() {
+        var user = firebase.auth().currentUser;
 
-        //TODO get current user https://firebase.google.com/docs/auth/web/manage-users#get_the_currently_signed-in_user
-        return this.$cookies.get('uid');
+        if (user) {
+            return this.$cookies.get('uid');
+        } else {
+            // No user is signed in.
+        }
     }
 }
 

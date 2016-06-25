@@ -36,7 +36,6 @@ angular.module('seed', [
     'toastr',
     'ngCookies',
     'google-maps',
-    'ui.bootstrap'
 ])
 
     .config(appConfig)

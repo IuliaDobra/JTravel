@@ -15,8 +15,8 @@
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
-                <li class="active"><a style="text-decoration: none; border-bottom: none;" href="/#/jtravel/dashboard">Map</a></li>
-                <li><a style="text-decoration: none; border-bottom: none;" href="/#/jtravel/itinerary">Itinerary</a></li>
+                <li ng-class="{'active' : vm.dashboard}" ng-click="vm.checkDashboard()"><a style="text-decoration: none; border-bottom: none;" href="/#/jtravel/dashboard">Map</a></li>
+                <li ng-class="{'active' : vm.itinerary}" ng-click="vm.checkItinerary()"><a style="text-decoration: none; border-bottom: none;" href="/#/jtravel/itinerary">Itinerary</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 <li style="cursor: pointer;"><a style="text-decoration: none; border-bottom: none;" ng-click="vm.logout()">Logout</a></li>

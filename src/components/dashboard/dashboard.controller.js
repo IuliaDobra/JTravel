@@ -380,6 +380,22 @@ class DashboardController extends BaseInjectable {
         var userId = this.authService.isAuthenticated();
         var newItineraryKey = firebase.database().ref('itinerary').child(userId).push().key;
         var updates = {};
+        if(!!!this.originPlaceId) {
+            window.alert('Origin place is not set!');
+            return false;
+        }
+        if(!!!this.destinationPlaceId) {
+            window.alert('Destination place is not set!');
+            return false;
+        }
+        if(!!!this.startDate) {
+            window.alert('Start date is not set!');
+            return false;
+        }
+        if(!!!this.endDate) {
+            window.alert('End date is not set!');
+            return false;
+        }
         updates['/itinerary/' + userId + '/' + newItineraryKey] = {
             originPlaceId: this.originPlaceId,
             originPlaceName: this.originPlaceName,
@@ -411,6 +427,8 @@ class DashboardController extends BaseInjectable {
         firebase.database().ref('itinerary/' + userId + '/' + itineraryId).update({
             enabled: 0
         });
+
+        this.$state.go('master.itinerary');
     }
 
     setItineraryOnMap() {
@@ -446,7 +464,6 @@ DashboardController.$inject = [
     'mapsService',
     'datepickerService',
     '$state',
-    'ui.bootstrap'
 ];
 
 export default DashboardController;
