@@ -14,11 +14,7 @@ import datepickerService from './js/services/datepickerService';
 import material from 'angular-material';
 import angularFire from '../node_modules/angularfire/dist/angularfire';
 import firebase from '../node_modules/firebase/firebase';
-
-//import autocomplete from './js/lib/autocomplete.min'
 import angularCookies from 'angular-cookies';
-//import ngMap from './js/lib/ng-map';
-//import googleMaps from './js/lib/angular-google-maps';
 
 // CSS entry point
 import './styles/index.scss';
