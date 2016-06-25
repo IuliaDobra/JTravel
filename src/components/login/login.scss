@@ -8,6 +8,10 @@
     overflow: hidden;
 
     form {
+
+      .form-control {
+        box-shadow: none;
+      }
       border: 1px solid white;
       -webkit-box-shadow: 14px 14px 48px 0px rgba(0,0,0,0.75);
       -moz-box-shadow: 14px 14px 48px 0px rgba(0,0,0,0.75);
@@ -23,6 +27,9 @@
       margin-right: 5vw;
       padding: 0 25px 25px 25px;
       color: darkgrey;
+      input[type="text"]{
+        border-top: none;
+      }
       .center-buttons {
         text-align: center;
       }
