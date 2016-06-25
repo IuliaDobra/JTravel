@@ -13,6 +13,8 @@ class ItineraryController extends BaseInjectable {
             this.itineraries = r;
             console.log(this.itineraries);}
         );
+
+        this.isVisible = false;
     }
 
 
@@ -46,6 +48,11 @@ class ItineraryController extends BaseInjectable {
                 this.$state.go('master.dashboard');
             }
         });
+    }
+
+    toggleView() {
+        this.isVisible = !this.isVisible;
+        return this.isVisible;
     }
 }
 

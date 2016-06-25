@@ -392,6 +392,7 @@ class DashboardController extends BaseInjectable {
         };
 
         this.$cookies.put('itinerary_key', newItineraryKey);
+
         return firebase.database().ref().update(updates);
     }
 
@@ -444,6 +445,7 @@ DashboardController.$inject = [
     'mapsService',
     'datepickerService',
     '$state',
+    'ui.bootstrap'
 ];
 
 export default DashboardController;
