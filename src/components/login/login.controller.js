@@ -12,6 +12,7 @@ class LoginController extends BaseInjectable {
 
     createUser() {
         this.authService.createUser(this.createEmail,this.createPassword);
+        window.alert("Your account has been created!");
     }
 
     authUser() {

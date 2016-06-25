@@ -445,8 +445,7 @@ DashboardController.$inject = [
     'authService',
     'mapsService',
     'datepickerService',
-    '$state',
-    'ui.bootstrap'
+    '$state'
 ];
 
 export default DashboardController;
