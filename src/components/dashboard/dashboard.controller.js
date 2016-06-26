@@ -385,6 +385,7 @@ class DashboardController extends BaseInjectable {
         var userId = this.authService.isAuthenticated();
         var newItineraryKey = firebase.database().ref('itinerary').child(userId).push().key;
         var updates = {};
+
         if(!!!this.originPlaceId) {
             window.alert('Origin place is not set!');
             return false;
@@ -469,6 +470,7 @@ DashboardController.$inject = [
     'mapsService',
     'datepickerService',
     '$state',
+    'SweetAlert'
 ];
 
 export default DashboardController;

@@ -16,6 +16,7 @@ import angularFire from '../node_modules/angularfire/dist/angularfire';
 import firebase from '../node_modules/firebase/firebase';
 import angularCookies from 'angular-cookies';
 import AngularPrint from './js/lib/angularPrint';
+import ngSweetAlert from '../node_modules/ngsweetalert/ngSweetAlert'
 
 // CSS entry point
 import './styles/index.scss';
@@ -29,6 +30,7 @@ angular.module('seed', [
     ngResource,
     commonModules.name,
     componentsModule.name,
+    'ngSweetAlert',
     'firebase',
     'toastr',
     'ngCookies',

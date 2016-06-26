@@ -1,25 +1,29 @@
-<h2 style="margin: 0 15px;">Your itineraries</h2>
+<h2>Your itineraries</h2>
 <div ng-repeat="(itineraryId, itinerary) in vm.itineraries" class="container-fluid itinerary">
     <div class="row">
         <div class="col-md-12">
             <div class="row originDestination">
                 <div class="col-md-4">
-                    From: {{itinerary.originPlaceName}}
+                    From: {{itinerary.originPlaceName}} <br>
+                    Start date: {{itinerary.startDate}}
                 </div>
                 <div class="col-md-4">
-                    To: {{itinerary.destinationPlaceName}}
+                    To: {{itinerary.destinationPlaceName}} <br>
+                    End date: {{itinerary.endDate}}
                 </div>
                 <div class="col-md-4 editButton" style="text-align: right;">
                     <button class="btn btn-primary" ng-click="vm.update(itineraryId)"><i class="fa fa-pencil-square-o"></i>Edit</button>
-                    <button class="btn btn-success" id="view-itinerary-button" ng-click="vm.toggleView(itineraryId)"><i class="fa fa-eye"></i>View</button>
-                    <!--<button class="btn btn-success" id="view-itinerary-button" ui-sref="/#/jtravel/itinerary/({itineraryId: itineraryId})"><i class="fa fa-eye"></i>View</button>-->
+                    <button class="btn btn-success" id="view-itinerary-button" ng-click="vm.toggleView()"><i class="fa fa-eye"></i>View</button>
+                    <button class="btn btn-warning" id="print-itinerary-button" ng-click="vm.printItinerary(itineraryId)"><i class="fa fa-print"></i>Print</button>
                 </div>
             </div>
             <div class="row places-container" ng-show="vm.isVisible">
-                <h2>You will visit</h2>
+                <div class="col-md-12">
+                    <h2>You will visit</h2>
+                </div>
                 <div class="col-md-12" ng-repeat="place in itinerary.places">
                     <div class="row place">
-                        <h3 class="placeName">{{place.name}}</h3>
+                        <a href="{{place.website}}"><h3 class="placeName">{{place.name}}</h3></a>
                         <div>
                             <i class="fa fa-times" ng-click="vm.delete(itineraryId, place.placeId)"></i>
                         </div>
@@ -30,7 +34,7 @@
                             <img src="../.././assets/images/NoImageAvailable.png">
                         </div>
                         <div class="col-md-4">
-                            <label>Address: </label> {{place.formatted_address}} <br>
+                            <label>Address: </label> <br> {{place.formatted_address}}
                             <label ng-if="place.formatted_phone_number">Phone:</label> {{place.formatted_phone_number}}<br>
                             <label ng-if="place.website">Website: </label> <a ng-href={{place.website}}>{{place.website}}</a>
                         </div>
