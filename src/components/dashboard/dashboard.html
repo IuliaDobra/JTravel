@@ -1,10 +1,10 @@
 <input id="origin-input" class="controls" type="text" force-selection="true"
-       placeholder="Enter an origin location" data-step="3" data-intro="From here you can select the departure location">
+       placeholder="Enter an origin location" data-step="4" data-intro="From here you can select the departure location">
 
 <input id="destination-input" class="controls" type="text" force-selection="true"
-       placeholder="Enter a destination location" data-step="4" data-intro="From here you can select the arrival location">
+       placeholder="Enter a destination location" data-step="5" data-intro="From here you can select the arrival location">
 
-<div id="mode-selector" class="controls">
+<div id="mode-selector" class="controls" data-step="3" data-intro="Here you select your traveling mode">
     <input type="radio" name="type" id="changemode-walking" checked="checked">
     <label for="changemode-walking">Walking</label>
 
@@ -20,8 +20,8 @@
     <input type="text" name="end_date" ng-model="vm.endDate" class="has-datepicker" placeholder="Ending date..." data-step="2" data-intro="From here you can select the end date of your itinerary">
     <div class="buttons">
         <input type="button" class="btn btn-primary" href="javascript:void(0);" onclick="javascript:introJs().start();" value="How to?">
-        <input type="button" class="btn btn-primary" ng-click="vm.createItinerary()" value="Create itinerary" data-step="5" data-intro="After selecting the start date, end date, departure and arrival your can create your itinerary and start adding places">
-        <input type="button" class="btn btn-primary" ng-click="vm.finishItinerary()" value="Finish itinerary">
+        <input type="button" class="btn btn-primary" ng-click="vm.createItinerary()" value="Create itinerary" data-step="6" data-intro="After selecting the start date, end date, departure and arrival your can create your itinerary and start adding places">
+        <input type="button" class="btn btn-primary" ng-click="vm.finishItinerary()" value="Finish itinerary" data-step="7" data-intro="This button has to be clicked in order for your itinerary to be added in your list">
     </div>
 
 </div>
@@ -30,7 +30,7 @@
 <div class="mapAndDirections">
     <div id="map_canvas"></div>
     <nav class="mobile">
-        <button>Toggle</button>
+        <button data-step="8" data-intro="Here you can open the directions once you selected an origin place and a destination.">Toggle</button>
         <div>
             <div id="directionsList"></div>
         </div>
