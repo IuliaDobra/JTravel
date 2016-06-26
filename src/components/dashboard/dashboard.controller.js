@@ -224,8 +224,6 @@ class DashboardController extends BaseInjectable {
                     infowindow.setContent(HTML);
                     infowindow.open(_map, this);
                 });
-
-                _map.panTo(place.geometry.location);
             }
         });
     }
