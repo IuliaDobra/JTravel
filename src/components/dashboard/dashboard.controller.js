@@ -28,6 +28,11 @@ class DashboardController extends BaseInjectable {
         });
 
         this.isAuth();
+
+        $('.has-datepicker').datepicker({
+            format: 'dd/mm/yyyy',
+            autoclose: true
+        });
     }
     
     
